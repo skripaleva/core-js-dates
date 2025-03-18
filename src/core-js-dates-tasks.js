@@ -32,8 +32,21 @@ function dateToTimestamp(date) {
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
-function getTime(/* date */) {
-  throw new Error('Not implemented');
+function getTime(date) {
+  const currentDate = new Date(date);
+  let hours = currentDate.getHours();
+  if (hours < 9) {
+    hours = `0${hours}`;
+  }
+  let minutes = currentDate.getMinutes();
+  if (minutes < 9) {
+    minutes = `0${minutes}`;
+  }
+  let secunds = currentDate.getSeconds();
+  if (secunds < 9) {
+    secunds = `0${secunds}`;
+  }
+  return `${hours}:${minutes}:${secunds}`;
 }
 
 /**
@@ -45,10 +58,21 @@ function getTime(/* date */) {
  * @example:
  * '01 Jan 1970 00:00:00 UTC' => 'Thursday'
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
- * '2024-01-30T00:00:00.000Z' => 'Tuesday'
+ * '2024-01-30T00:00:00.000Z' => '
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  const currentDate = new Date(date);
+  const day = currentDate.getDay();
+  return days[day];
 }
 
 /**
@@ -62,8 +86,18 @@ function getDayName(/* date */) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  const currentDate = new Date(date);
+  const day = currentDate.getDay();
+  const milliSeconds = currentDate.getTime();
+  let daysTillFriday = 0;
+  if (day < 5) {
+    daysTillFriday = 5 - day;
+  } else {
+    daysTillFriday = 7 - day + 5;
+  }
+  const newDate = milliSeconds + 86400000 * daysTillFriday;
+  return new Date(newDate);
 }
 
 /**
