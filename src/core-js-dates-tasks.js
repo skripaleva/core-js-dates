@@ -111,8 +111,12 @@ function getNextFriday(date) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month === 2 && year % 4 === 0) {
+    return 29;
+  }
+  return daysInMonth[month - 1];
 }
 
 /**
@@ -126,9 +130,20 @@ function getCountDaysInMonth(/* month, year */) {
  * '2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z'  => 2
  * '2024-02-01T00:00:00.000Z', '2024-02-12T00:00:00.000Z'  => 12
  */
-function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
-  throw new Error('Not implemented');
+function getCountDaysOnPeriod(dateStart, dateEnd) {
+  const dateOne = new Date(dateStart);
+  const dateTwo = new Date(dateEnd);
+
+  dateOne.toUTCString();
+
+  dateTwo.toUTCString();
+
+  const result = dateTwo - dateOne;
+
+  return result / (1000 * 60 * 60 * 24) + 1;
 }
+
+getCountDaysOnPeriod('2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z');
 
 /**
  * Returns true if a given date is within a specified range, including both the start and end dates.
@@ -147,8 +162,14 @@ function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
  * '2024-02-02', { start: '2024-02-02', end: '2024-03-02' } => true
  * '2024-02-10', { start: '2024-02-02', end: '2024-03-02' } => true
  */
-function isDateInPeriod(/* date, period */) {
-  throw new Error('Not implemented');
+function isDateInPeriod(date, period) {
+  const dateOne = new Date(period.start);
+  const dateTwo = new Date(period.end);
+  const dateCheck = new Date(date);
+  dateOne.toUTCString();
+  dateTwo.toUTCString();
+  dateCheck.toUTCString();
+  return dateOne <= dateCheck && dateCheck <= dateTwo;
 }
 
 /**
@@ -162,8 +183,28 @@ function isDateInPeriod(/* date, period */) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const currentDate = new Date(date);
+  const day = currentDate.getUTCDate();
+  const month = currentDate.getUTCMonth();
+  const year = currentDate.getUTCFullYear();
+  let hours = currentDate.getUTCHours();
+  let minutes = currentDate.getUTCMinutes();
+  let secunds = currentDate.getUTCSeconds();
+  let timeOfDay = 'AM';
+  if (hours >= 12) {
+    timeOfDay = 'PM';
+  }
+  if (hours > 12) {
+    hours -= 12;
+  }
+  if (minutes < 9) {
+    minutes = `0${minutes}`;
+  }
+  if (secunds < 9) {
+    secunds = `0${secunds}`;
+  }
+  return `${month + 1}/${day}/${year}, ${hours}:${minutes}:${secunds} ${timeOfDay}`;
 }
 
 /**
@@ -178,8 +219,18 @@ function formatDate(/* date */) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const date = new Date(year, month, 0);
+  const days = date.getDate();
+  let weekends = 0;
+  for (let i = 1; i <= days; i += 1) {
+    const day = new Date(year, month - 1, i);
+    const dayOfWeek = day.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      weekends += 1;
+    }
+  }
+  return weekends;
 }
 
 /**
