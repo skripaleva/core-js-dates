@@ -296,7 +296,6 @@ function getNextFridayThe13th(date) {
  */
 function getQuarter(date) {
   const month = date.getMonth();
-  console.log(month, date);
   let season = 0;
   switch (month) {
     case 1:
