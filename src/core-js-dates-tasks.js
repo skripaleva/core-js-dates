@@ -71,7 +71,7 @@ function getDayName(date) {
     'Saturday',
   ];
   const currentDate = new Date(date);
-  const day = currentDate.getDay();
+  const day = currentDate.getUTCDay();
   return days[day];
 }
 
@@ -88,7 +88,7 @@ function getDayName(date) {
  */
 function getNextFriday(date) {
   const currentDate = new Date(date);
-  const day = currentDate.getDay();
+  const day = currentDate.getUTCDay();
   const milliSeconds = currentDate.getTime();
   let daysTillFriday = 0;
   if (day < 5) {
