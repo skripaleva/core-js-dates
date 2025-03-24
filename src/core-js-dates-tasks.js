@@ -345,15 +345,18 @@ function getQuarter(date) {
  */
 function getWorkSchedule(period, countWorkDays, countOffDays) {
   const scheduleArr = [];
-  let workDays = countWorkDays;
-  let date = new Date(period.start.split('-').reverse().join('-'));
-  const endDate = new Date(period.end.split('-').reverse().join('-'));
-  while (endDate - date > 0) {
-    for (let i = workDays; i > 0; i -= 1) {
-      if (endDate - date > 0) {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDate();
+  const dateArr = period.start.split('-');
+  let date = new Date(Date.UTC(dateArr[2], dateArr[1] - 1, dateArr[0]));
+  const endDateArr = period.end.split('-');
+  const endDate = new Date(
+    Date.UTC(endDateArr[2], endDateArr[1] - 1, endDateArr[0])
+  );
+  while (endDate - date >= 0) {
+    for (let i = countWorkDays; i > 0; i -= 1) {
+      if (endDate - date >= 0) {
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        const day = date.getUTCDate();
         let printDay = day;
         if (day < 10) {
           printDay = `0${day}`;
@@ -366,11 +369,10 @@ function getWorkSchedule(period, countWorkDays, countOffDays) {
         date = new Date(year, month, day + 1);
       }
     }
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    date = new Date(year, month, day + countOffDays);
-    workDays = countWorkDays;
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    date = new Date(Date.UTC(year, month, day + countOffDays));
   }
   return scheduleArr;
 }
