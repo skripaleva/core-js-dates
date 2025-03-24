@@ -349,21 +349,22 @@ function getWorkSchedule(period, countWorkDays, countOffDays) {
   let date = new Date(period.start.split('-').reverse().join('-'));
   const endDate = new Date(period.end.split('-').reverse().join('-'));
   while (endDate - date > 0) {
-    while (workDays > 0 && endDate - date > 0) {
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      const day = date.getDate();
-      let printDay = day;
-      if (day < 10) {
-        printDay = `0${day}`;
+    for (let i = workDays; i > 0; i -= 1) {
+      if (endDate - date > 0) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+        let printDay = day;
+        if (day < 10) {
+          printDay = `0${day}`;
+        }
+        let printMonth = month + 1;
+        if (month < 10) {
+          printMonth = `0${month + 1}`;
+        }
+        scheduleArr.push(`${printDay}-${printMonth}-${year}`);
+        date = new Date(year, month, day + 1);
       }
-      let printMonth = month + 1;
-      if (month < 10) {
-        printMonth = `0${month + 1}`;
-      }
-      scheduleArr.push(`${printDay}-${printMonth}-${year}`);
-      date = new Date(year, month, day + 1);
-      workDays -= 1;
     }
     const year = date.getFullYear();
     const month = date.getMonth();
